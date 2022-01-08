@@ -4,5 +4,6 @@
 
 ## Usage Instructions
 
-## How it works
+## Sponsor Information
 
+## Directory Structure
