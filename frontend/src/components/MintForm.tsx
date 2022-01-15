@@ -9,17 +9,13 @@ import {
   Text,
   Textarea,
   Box,
-  useToast
+  useDisclosure
 } from "@chakra-ui/react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, FormProvider, useFormContext } from "react-hook-form";
 import React from 'react';
 
-type FormValues = {
-  title: string,
-  desc: string,
-  addr: string,
-  img: FileList
-}
+import { FormValues } from "./FormTypes"
+import MintModal from "./MintModal";
 
 export default function MintForm() {
 
@@ -27,24 +23,12 @@ export default function MintForm() {
   let [data, setData] = React.useState(null)
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
-  const toast = useToast( )
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const onSubmit: SubmitHandler<FormValues> = (d: any) => {
     console.log(d)
     setData(d)
-
-
-    // Mint NFT
-
-
-
-
-    toast({
-      title: "Submitted!",
-      status: "success",
-      duration: 3000,
-      isClosable: true
-    });
+    onOpen()
   }
 
   let handleUpload = (e: any) => {
@@ -59,7 +43,6 @@ export default function MintForm() {
           <Input 
             id="title" 
             color="white"
-            // value={title}
             {...register("title", {
               required: "Every project needs a title"
             })}
@@ -73,7 +56,6 @@ export default function MintForm() {
           <Textarea
             id="desc"
             color="white"
-            // value={value}
             {...register("desc", {
               required: "Every project needs a description"
             })}
@@ -87,7 +69,6 @@ export default function MintForm() {
           <Input 
             id="addr" 
             color="white"
-            // value={addr}
             {...register("addr")}
           />
           <FormHelperText>Where should the funds go?</FormHelperText>
@@ -100,6 +81,8 @@ export default function MintForm() {
             id="image"
             {...register("img")}
             onChange={handleUpload}
+            variant='unstyled'
+            isRequired
           />
         </FormControl>
         <Box 
@@ -122,6 +105,11 @@ export default function MintForm() {
         <Button colorScheme='teal' size='md' type="submit">
           Submit
         </Button>
+        {
+          data? (
+            <MintModal isOpen={isOpen} onClose={onClose} data={data}/> 
+          ) : (<></>)
+        }
       </Stack>
     </form>
   )

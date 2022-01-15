@@ -8,11 +8,13 @@ import {
   TabList,
   Tab,
   TabPanel,
-  TabPanels
+  TabPanels,
+  useDisclosure
 } from "@chakra-ui/react";
 
 import MintForm from "./MintForm";
 import Marketplace from "./Marketplace";
+import MintModal from "./MintModal";
 
 
 export default function Home() {
