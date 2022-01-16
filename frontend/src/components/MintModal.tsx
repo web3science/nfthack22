@@ -16,6 +16,9 @@ import {
 } from "@chakra-ui/react";
 import { useEthers } from "@usedapp/core";
 
+import { ethers } from "ethers";
+import { Zora } from "@zoralabs/zdk";
+
 type Props = {
   isOpen: any;
   onClose: any;
@@ -24,12 +27,18 @@ type Props = {
 
 export default function MintModal({ isOpen, onClose, data }: Props) {
 
-  const { account } = useEthers()
+  const { account, library, chainId } = useEthers()
 
   const title = data.title
   const desc = data.desc
   const addr = data.addr ? data.addr : account
   const img = data.img.length? data.img[0] : null
+
+  const provider = library? new ethers.providers.Web3Provider(library.provider) : null
+  const chain = chainId? chainId : 4 // fallback == rinkeby
+
+  // const zora = provider? new Zora(provider, chain) : null // BREAKS : webpack < 5 vs 5.66.0
+
 
   function minter() {
     console.log(data)

@@ -8,8 +8,8 @@ export default function Content() {
   const { account } = useEthers();
 
   return account ? (
-    <Landing />
-    ) : (
     <Home />
+    ) : (
+    <Landing />
   )
 }
